@@ -1,0 +1,33 @@
+<!-- TODO: Check if user is logged in and conditionally display sign up banner -->
+<section class="hero is-medium">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-white has-text-centered">
+        PLVSTIK
+      </h1>
+      <h2 class="subtitle has-text-white has-text-centered">
+        The leading online destination for designers to showcase <br /> their artwork and creations.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<div class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-one-quarter" *ngFor="let item of items | async">
+        <div class="plvstik-shot">
+          <div class="plvstik-image" [ngStyle]="{ 'background-image': 'url(' + item.image_url + ')'}">
+          </div>
+          <ul class="actions">
+            <li>Like</li>
+            <li>Comment</li>
+            <li>View</li>
+            <li>Favorite</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
