@@ -1,0 +1,53 @@
+<section class="hero" style="background:#FFB2B2;">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-centered">
+        Hero title
+      </h1>
+      <h2 class="subtitle has-text-centered">
+        Hero subtitle
+      </h2>
+      <div class="columns">
+        <div class="column is-half is-offset-one-quarter">
+
+          <form [formGroup]="registerForm">
+             <div class="field">
+               <div class="form-group">
+                 <label>Email address</label>
+                 <p class="control has-icons-left">
+                   <!-- Email input -->
+                   <input class="input" type="email" placeholder="Email" formControlName="email" required>
+                   <!-- Email icon -->
+                   <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                 </p>
+               </div>
+             </div>
+             <div class="field">
+               <div class="form-group">
+                 <label>Password</label>
+                 <p class="control has-icons-left">
+                   <!-- Password input -->
+                   <input class="input" type="password" placeholder="Password" formControlName="password" required>
+                   <!-- Password icon -->
+                   <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                 </p>
+                 <label class="error">{{errorMessage}}</label>
+                 <label class="success">{{successMessage}}</label>
+               </div>
+             </div>
+             <button class="button is-white" type="submit" (click)="tryRegister(registerForm.value)">Register</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="section">
+  <div class="container">
+
+  </div>
+</div>

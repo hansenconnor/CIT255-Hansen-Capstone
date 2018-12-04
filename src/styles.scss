@@ -1,1 +1,37 @@
+$primary: red;
 /* You can add global styles to this file, and also import other style files */
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Bentham');
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
+// Set your brand colors
+$purple: #8A4D76;
+$pink: #FA7C91;
+$brown: #757763;
+$beige-light: #D0D1CD;
+$beige-lighter: #EFF0EB;
+
+// Update Bulma's global variables
+$family-sans-serif: 'Muli', sans-serif;
+$grey-dark: $brown;
+$grey-light: $beige-light;
+$primary: $purple;
+$link: $pink;
+
+// Update some of Bulma's component variables
+$control-border-width: 2px;
+$input-background-color: $beige-lighter;
+$input-border-color: transparent;
+$input-shadow: none;
+
+$radius: 0px;
+
+// BUTTONS
+$button-padding-horizontal: 2em;
+.button {
+  text-transform: uppercase;
+}
+
+
+// Import the rest of Bulma
+@import "../node_modules/bulma/bulma.sass";
