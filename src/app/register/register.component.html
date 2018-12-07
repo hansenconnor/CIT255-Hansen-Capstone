@@ -1,10 +1,10 @@
 <section class="hero" style="background:#FFB2B2;">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title has-text-centered">
+      <h1 class="title is-1 has-text-centered has-text-white">
         Hero title
       </h1>
-      <h2 class="subtitle has-text-centered">
+      <h2 class="subtitle is-4 has-text-centered has-text-white">
         Hero subtitle
       </h2>
       <div class="columns">
@@ -37,6 +37,7 @@
              </div>
              <button class="button is-white" type="submit" (click)="tryRegister(registerForm.value)">Register</button>
           </form>
+          <button (click)="googleSignup()">Log in with Google</button>
 
         </div>
       </div>

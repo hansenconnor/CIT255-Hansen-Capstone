@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from '../auth-service.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -8,26 +9,36 @@ import { AuthServiceService } from '../auth-service.service';
 })
 export class RegisterComponent implements OnInit {
 
-  authService: AuthServiceService;
+  // authService: AuthServiceService;
   errorMessage:string;
   successMessage:string;
+  registerForm: FormGroup;
 
-  constructor() { }
+  constructor( private fb: FormBuilder, private af: AuthService ) { }
 
-  tryRegister(value){
-  this.authService.doRegister(value)
-  .then(res => {
-    console.log(res);
-    this.errorMessage = "";
-    this.successMessage = "Your account has been created";
-  }, err => {
-    console.log(err);
-    this.errorMessage = err.message;
-    this.successMessage = "";
-  })
-}
+  // googleSignup() {
+  //   console.log("sign in");
+  //   this.af.login();
+  // }
 
-  ngOnInit() {
+  ngOnInit() : void {
+    this.buildForm();
+  }
+
+  buildForm() : void {
+    this.registerForm = this.fb.group({
+      'email': ['', [
+          Validators.required,
+          Validators.email
+        ]
+      ],
+      'password': ['', [
+        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.minLength(6),
+        Validators.maxLength(25)
+      ]
+    ],
+    });
   }
 
 }

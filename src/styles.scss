@@ -3,6 +3,7 @@ $primary: red;
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Bentham');
 @import url('https://fonts.googleapis.com/css?family=Muli');
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
 // Set your brand colors
 $purple: #8A4D76;
@@ -25,6 +26,19 @@ $input-border-color: transparent;
 $input-shadow: none;
 
 $radius: 0px;
+
+// Titles
+.title {
+  font-family: 'Muli', sans-serif;
+  letter-spacing: 1px;
+  color: #333;
+}
+.subtitle {
+  font-family: 'Varela Round', sans-serif;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
 
 // BUTTONS
 $button-padding-horizontal: 2em;

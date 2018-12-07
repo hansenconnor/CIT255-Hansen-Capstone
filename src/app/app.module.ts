@@ -7,21 +7,23 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
+import {AuthService} from './core/auth.service';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { HeaderComponent } from './header/header.component';
 import { environment } from '../environments/environment';
-import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
     HeaderComponent,
-    LoginComponent,
-    RegisterComponent
+    UserLoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,10 +32,10 @@ import { RegisterComponent } from './register/register.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    AngularFireAuthModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
