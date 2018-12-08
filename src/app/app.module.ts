@@ -16,6 +16,7 @@ import { HeaderComponent } from './header/header.component';
 import { environment } from '../environments/environment';
 import { RegisterComponent } from './register/register.component';
 import { UserLoginComponent } from './user-login/user-login.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
     HeaderComponent,
     UserLoginComponent,
     RegisterComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

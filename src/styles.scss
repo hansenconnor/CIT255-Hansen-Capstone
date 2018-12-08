@@ -1,9 +1,14 @@
-$primary: red;
 /* You can add global styles to this file, and also import other style files */
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Bentham');
 @import url('https://fonts.googleapis.com/css?family=Muli');
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
+@import url('https://fonts.googleapis.com/css?family=Cardo:400,400i,700');
+
+
+$menu-item-color: #313131;
+$navbar-item-color: #313131;
+
 
 // Set your brand colors
 $purple: #8A4D76;
@@ -13,11 +18,13 @@ $beige-light: #D0D1CD;
 $beige-lighter: #EFF0EB;
 
 // Update Bulma's global variables
+$family-primary: 'Muli', sans-serif;
 $family-sans-serif: 'Muli', sans-serif;
+$family-sans-serif: 'Cardo', serif;
 $grey-dark: $brown;
 $grey-light: $beige-light;
-$primary: $purple;
-$link: $pink;
+$primary: #FF7CBE;
+$link: #FF7CBE;
 
 // Update some of Bulma's component variables
 $control-border-width: 2px;
@@ -27,24 +34,28 @@ $input-shadow: none;
 
 $radius: 0px;
 
+// Typography
+$light: #A7A7A7;
+
 // Titles
 .title {
   font-family: 'Muli', sans-serif;
-  letter-spacing: 1px;
-  color: #333;
+  letter-spacing: 0.02em;
 }
 .subtitle {
-  font-family: 'Varela Round', sans-serif;
-  color: #999;
+  font-family: 'Cardo', serif;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
-  letter-spacing: 2px;
+}
+
+// Navbar
+$navbar-height: 6.5rem;
+.navbar-item {
+  letter-spacing: 0.02em;
 }
 
 // BUTTONS
 $button-padding-horizontal: 2em;
-.button {
-  text-transform: uppercase;
-}
 
 
 // Import the rest of Bulma

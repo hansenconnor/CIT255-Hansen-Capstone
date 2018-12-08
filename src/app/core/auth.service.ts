@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from 'angularfire2/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
 
   authState: any = null;
 
-  constructor(private afAuth: AngularFireAuth, private router: Router) {
+  constructor(private afAuth: AngularFireAuth, private router: Router, private db: AngularFirestore) {
+    db.firestore.settings({ timestampsInSnapshots: true }); //
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth
     });
@@ -38,29 +41,43 @@ export class AuthService {
   }
 
   signUpWithGmail(){
-    
+
   }
 
-  signUpWithEmail(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        this.authState = user
-      })
-      .catch(error => {
-        console.log(error)
-        throw error
-      });
+  async signUpWithEmail(email: string, password: string) {
+    try {
+      const user = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+      this.authState = user;
+      this.addUserToDatabase();
+    }
+    catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
-  loginWithEmail(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        this.authState = user
-      })
-      .catch(error => {
-        console.log(error)
-        throw error
-      });
+  async loginWithEmail(email: string, password: string) {
+    try {
+      const user = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
+      this.authState = user;
+    }
+    catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  addUserToDatabase() {
+    var user = firebase.auth().currentUser;
+    alert(user.uid);
+    const collection = this.db.collection("users")
+        collection.doc(user.uid).set({
+            uid : user.uid,
+            first: "Connor",
+            last: "Hansen"
+        }).then(()=>{
+            console.log("done")
+        })
   }
 
   signOut(): void {
