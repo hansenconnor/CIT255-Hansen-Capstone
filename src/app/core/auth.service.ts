@@ -4,6 +4,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 // import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -19,9 +20,11 @@ export class AuthService {
   isAnonymous;
   uid;
   providerData;
+  myUser: Observable<firebase.User>;
 
   constructor(private router: Router, private afAuth: AngularFireAuth) {
     afAuth.authState.subscribe(user => console.log(user));
+    this.myUser = afAuth.authState;
     this.db = firebase.firestore();
     this.db.settings({ timestampsInSnapshots: true }); //
     // this.afAuth.user.subscribe((auth) => {
@@ -49,7 +52,7 @@ export class AuthService {
     // });
   }
 
-  currentUser(){
+  get currentUser(){
     // var user = "this.afAuth.auth.currentUser";
     // if (user) {
     //     return true;
@@ -58,6 +61,11 @@ export class AuthService {
     // }
     return this.afAuth.auth.currentUser;
   }
+
+
+  userStatus() {
+      return this.afAuth.authState;
+    }
 
   get isUserAnonymousLoggedIn(): boolean {
     return (this.user !== null) ? this.user.isAnonymous : false
@@ -73,18 +81,20 @@ export class AuthService {
   }
 
   get currentUsername() {
-    var username = '';
     var currentUser = this.afAuth.auth.currentUser;
     var currUserId = currentUser.uid;
     var docRef = this.db.collection("users").doc(currUserId);
-    docRef.get().then(function(doc){
+    var username = docRef.get().then(function(doc){
       if (doc.exists) {
-        username = doc.username;
+        // this.username = doc.username;
         console.log("Document data:", doc.data());
+        var doc = doc.data();
+        console.log(doc['username']);
+        return doc['username'];
       } else {
-          username = '/';
-          // doc.data() will be undefined in this case
           console.log("No such document!");
+          return '/';
+          // doc.data() will be undefined in this case
       }
     });
     return username;
@@ -117,10 +127,10 @@ export class AuthService {
   async signUpWithEmail(email: string, password: string) {
     try {
       const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      this.user = user;
+      // this.user = user;
     }
     catch (error) {
-      console.log(error);
+      alert(error);
       throw error;
     }
   }
@@ -140,7 +150,7 @@ export class AuthService {
   }
 
   addUserToDatabase(name, username) {
-    var user = firebase.auth().currentUser;
+    var user = this.afAuth.auth.currentUser;
     var collection = this.db.collection("users")
         collection.doc(user.uid).set({
             uid : user.uid,

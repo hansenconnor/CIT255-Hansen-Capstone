@@ -67,11 +67,26 @@ export class RegisterComponent implements OnInit {
   }
 
   onSignUp(): void {
-    this.clearErrorMessage()
+    this.clearErrorMessage();
     if (this.validateForm(this.name, this.username, this.email, this.password)) {
       this.authService.signUpWithEmail(this.email, this.password)
         .then(() => {
           this.authService.addUserToDatabase(this.name, this.username); // Add user to database
+          var user = this.authService.currentUser;
+          user.updateProfile({
+            displayName: this.username,
+            photoURL: ""
+          }).then(function() {
+            alert("Profile updated!")
+            // Profile updated successfully!
+            // "Jane Q. User"
+            var displayName = user.displayName;
+            // "https://example.com/jane-q-user/profile.jpg"
+            var photoURL = user.photoURL;
+          }, function(error) {
+            // An error happened.
+            alert("the error");
+          });
           this.router.navigate(['/'])
         }).catch(_error => {
           this.error = _error

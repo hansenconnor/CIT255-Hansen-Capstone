@@ -46,25 +46,19 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <a *ngIf="!authService.currentUser" href="/register">Sign up</a>
+            <a *ngIf="!myUser" href="/register">Sign up</a>
           </div>
-          <div class="navbar-item" *ngIf="authService.currentUser">
-            <a [routerLink]="['/', authService.currentUser]">Profile</a>
+          <!-- <div class="navbar-item">
+            <h1 *ngIf="myUser">GOT THE USER!!!</h1>
+            <h1>Name: {{(myUser | async)?.uid}}</h1>
+          </div> -->
+          <div class="navbar-item" *ngIf="myUser">
+            <!-- <a [routerLink]="['/', username]">Profile</a> -->
+            <a [routerLink]="['/', myUser.displayName]">{{myUser.displayName}}</a>
           </div>
           <div class="navbar-item">
-            <a *ngIf="!authService.currentUser" href="/login">Log in</a>
-            <a rel="nofollow" *ngIf="authService.currentUser" (click)="logout()">Logout</a>
-  <div>
-  	<h5 class="text-primary">User Information</h5>
-  	<h4>
-  		<strong>UID:</strong> {{ authService.uid }}
-  	</h4>
-  	<h4>
-  		<!-- <strong>Email:</strong> {{ authService.currentUsername }} -->
-  	</h4>
-  	<button class="button" (click)="logout()">Logout</button>
-  </div>
-
+            <a *ngIf="!myUser" href="/login">Log in</a>
+            <a rel="nofollow" *ngIf="myUser" (click)="logout()">Logout</a>
           </div>
         </div>
       </div>
