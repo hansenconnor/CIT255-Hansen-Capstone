@@ -16,22 +16,10 @@ export class HeaderComponent implements OnInit {
       // unsubscribe so we don't observe forever
       if (user) {
         //do something
-        alert("I'M A FUCKING FAGGOT");
+        alert("User exists");
       }
-      else { alert('You are not logged in.') } });
-    var user = firebase.auth();
-    if (user) {
-        alert("HAH GAYYYYYYYYYY");
-        console.log(user);
-    }
-    if (authService.user) {
-        alert("suck my big fat black gay cock");
-    }
-    if (user) {
-        alert(user);
-    } else {
-      alert("FUCK YOU");
-    }
+      else { alert('You are not logged in.') }
+    });
   }
 
 

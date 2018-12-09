@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
       this.authService.signUpWithEmail(this.email, this.password)
         .then(() => {
           this.authService.addUserToDatabase(this.name, this.username); // Add user to database
-          this.router.navigate(['/', this.authService.currentUsername()])
+          this.router.navigate(['/'])
         }).catch(_error => {
           this.error = _error
           this.router.navigate(['/'])
