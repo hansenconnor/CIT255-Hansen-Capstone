@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css?family=Muli');
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 @import url('https://fonts.googleapis.com/css?family=Cardo:400,400i,700');
+@import url("https://use.typekit.net/rby5buq.css"); // Montserrat
 
 
 $menu-item-color: #313131;
@@ -39,13 +40,16 @@ $light: #A7A7A7;
 
 // Titles
 .title {
-  font-family: 'Muli', sans-serif;
-  letter-spacing: 0.02em;
+  font-family: 'Varela Round', sans-serif;
 }
 .subtitle {
-  font-family: 'Cardo', serif;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  font-family: 'Proxima Nova', sans-serif;
+  // letter-spacing: 0.2rem;
+  // text-transform: uppercase;
+}
+.button {
+  font-family: 'Proxima Nova', sans-serif;
+  font-weight: bold;
 }
 
 // Navbar

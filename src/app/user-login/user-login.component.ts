@@ -37,26 +37,12 @@ export class UserLoginComponent implements OnInit {
     this.isNewUser = !this.isNewUser
   }
 
-  onSignUp(): void {
-    this.clearErrorMessage()
-
-    if (this.validateForm(this.email, this.password)) {
-      this.authService.signUpWithEmail(this.email, this.password)
-        .then(() => {
-          this.router.navigate(['/user'])
-        }).catch(_error => {
-          this.error = _error
-          this.router.navigate(['/'])
-        })
-    }
-  }
-
-  onLoginEmail(): void {
+  onLoginEmail() {
     this.clearErrorMessage()
 
     if (this.validateForm(this.email, this.password)) {
       this.authService.loginWithEmail(this.email, this.password)
-        .then(() => this.router.navigate(['/user']))
+        .then(() => this.router.navigate(['/']))
         .catch(_error => {
           this.error = _error
           this.router.navigate(['/'])

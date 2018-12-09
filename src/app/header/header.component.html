@@ -49,7 +49,7 @@
             <a *ngIf="!authService.currentUser" href="/register">Sign up</a>
           </div>
           <div class="navbar-item" *ngIf="authService.currentUser">
-            <a [routerLink]="['/', authService.currentUserName]">Profile</a>
+            <a [routerLink]="['/', authService.currentUsername]">Profile</a>
           </div>
           <div class="navbar-item">
             <a *ngIf="!authService.currentUser" href="/login">Log in</a>

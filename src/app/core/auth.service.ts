@@ -1,39 +1,82 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {AngularFireAuth} from 'angularfire2/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+// import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
 
-  authState: any = null;
+  // user: any = null;
+  user: any = null;
+  db;
+  displayName;
+  email;
+  emailVerified;
+  photoURL;
+  isAnonymous;
+  uid;
+  providerData;
 
-  constructor(private afAuth: AngularFireAuth, private router: Router, private db: AngularFirestore) {
-    db.firestore.settings({ timestampsInSnapshots: true }); //
-    this.afAuth.authState.subscribe((auth) => {
-      this.authState = auth
+  constructor(private router: Router) {
+    this.db = firebase.firestore();
+    this.db.settings({ timestampsInSnapshots: true }); //
+    // this.afAuth.user.subscribe((auth) => {
+    //   this.user = auth
+    // });
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+         // User is signed in.
+         this.displayName = user.displayName;
+         this.email = user.email;
+         this.emailVerified = user.emailVerified;
+         this.photoURL = user.photoURL;
+         this.isAnonymous = user.isAnonymous;
+         this.uid = user.uid;
+         this.providerData = user.providerData;
+         // ...
+       } else {
+         // User is signed out.
+         // ...
+       }
     });
   }
 
   get isUserAnonymousLoggedIn(): boolean {
-    return (this.authState !== null) ? this.authState.isAnonymous : false
+    return (this.user !== null) ? this.user.isAnonymous : false
   }
 
-  get currentUserId(): string {
-    return (this.authState !== null) ? this.authState.uid : ''
+  get currentUserId() {
+    return (this.user !== null) ? this.user.uid : ''
   }
 
-  get currentUserName(): string {
-    return this.authState['email']
+  get currentUserEmail(): string {
+    return this.user['email']
+  }
+
+  get currentUsername() {
+    var username;
+    var currentUser = firebase.auth().currentUser;
+    var currUserId = currentUser.uid;
+    var docRef = this.db.collection("users").doc(currUserId);
+    docRef.get().then(function(doc){
+      if (doc.exists) {
+        username = doc.username;
+        console.log("Document data:", doc.data());
+      } else {
+          username = '/';
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+    });
+return username;
   }
 
   get currentUser(): any {
-    return (this.authState !== null) ? this.authState : null;
+    return (this.user !== null) ? this.user : null;
   }
 
   get isUserEmailLoggedIn(): boolean {
-    if ((this.authState !== null) && (!this.isUserAnonymousLoggedIn)) {
+    if ((this.user !== null) && (!this.isUserAnonymousLoggedIn)) {
       return true
     } else {
       return false
@@ -46,9 +89,8 @@ export class AuthService {
 
   async signUpWithEmail(email: string, password: string) {
     try {
-      const user = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
-      this.authState = user;
-      this.addUserToDatabase();
+      const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      this.user = user;
     }
     catch (error) {
       console.log(error);
@@ -58,8 +100,9 @@ export class AuthService {
 
   async loginWithEmail(email: string, password: string) {
     try {
-      const user = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
-      this.authState = user;
+      const user = firebase.auth().signInWithEmailAndPassword(email, password).then( ()=> {
+        this.user = user;
+      });
     }
     catch (error) {
       console.log(error);
@@ -67,21 +110,20 @@ export class AuthService {
     }
   }
 
-  addUserToDatabase() {
+  addUserToDatabase(name, username) {
     var user = firebase.auth().currentUser;
-    alert(user.uid);
-    const collection = this.db.collection("users")
+    var collection = this.db.collection("users")
         collection.doc(user.uid).set({
             uid : user.uid,
-            first: "Connor",
-            last: "Hansen"
+            name: name,
+            username: username
         }).then(()=>{
             console.log("done")
         })
   }
 
   signOut(): void {
-    this.afAuth.auth.signOut();
+    firebase.auth().signOut();
     this.router.navigate(['/'])
   }
 }
