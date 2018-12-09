@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 // import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 
@@ -7,6 +9,7 @@ import * as firebase from 'firebase';
 export class AuthService {
 
   // user: any = null;
+  isLoggedIn;
   user: any = null;
   db;
   displayName;
@@ -17,28 +20,43 @@ export class AuthService {
   uid;
   providerData;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private afAuth: AngularFireAuth) {
+    afAuth.authState.subscribe(user => console.log(user));
     this.db = firebase.firestore();
     this.db.settings({ timestampsInSnapshots: true }); //
     // this.afAuth.user.subscribe((auth) => {
     //   this.user = auth
     // });
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-         // User is signed in.
-         this.displayName = user.displayName;
-         this.email = user.email;
-         this.emailVerified = user.emailVerified;
-         this.photoURL = user.photoURL;
-         this.isAnonymous = user.isAnonymous;
-         this.uid = user.uid;
-         this.providerData = user.providerData;
-         // ...
-       } else {
-         // User is signed out.
-         // ...
-       }
-    });
+    // afAuth.auth.onAuthStateChanged(function(user) {
+    //   alert(user);
+    //   if (user) {
+    //     alert(user.uid);
+    //     this.isLoggedIn = true;
+    //      // User is signed in.
+    //      this.displayName = user.displayName;
+    //      this.email = user.email;
+    //      this.emailVerified = user.emailVerified;
+    //      this.photoURL = user.photoURL;
+    //      this.isAnonymous = user.isAnonymous;
+    //      this.uid = user.uid;
+    //      this.providerData = user.providerData;
+    //      // ...
+    //    } else {
+    //      // User is signed out.
+    //      // ...
+    //      // this.user = false;
+    //    }
+    // });
+  }
+
+  currentUser(){
+    // var user = "this.afAuth.auth.currentUser";
+    // if (user) {
+    //     return true;
+    // } else {
+    //   return false;
+    // }
+    return this.afAuth.auth.currentUser;
   }
 
   get isUserAnonymousLoggedIn(): boolean {
@@ -46,7 +64,8 @@ export class AuthService {
   }
 
   get currentUserId() {
-    return (this.user !== null) ? this.user.uid : ''
+    // return (this.user !== null) ? this.user.uid : ''
+    return this.uid;
   }
 
   get currentUserEmail(): string {
@@ -54,8 +73,8 @@ export class AuthService {
   }
 
   get currentUsername() {
-    var username;
-    var currentUser = firebase.auth().currentUser;
+    var username = '';
+    var currentUser = this.afAuth.auth.currentUser;
     var currUserId = currentUser.uid;
     var docRef = this.db.collection("users").doc(currUserId);
     docRef.get().then(function(doc){
@@ -68,12 +87,20 @@ export class AuthService {
           console.log("No such document!");
       }
     });
-return username;
+    return username;
   }
 
-  get currentUser(): any {
-    return (this.user !== null) ? this.user : null;
-  }
+  // currentUser() {
+  //   var user = firebase.auth().currentUser;
+  //
+  //   if (user) {
+  //     // User is signed in.
+  //     return true;
+  //   } else {
+  //     // No user is signed in.
+  //     return false;
+  //   }
+  // }
 
   get isUserEmailLoggedIn(): boolean {
     if ((this.user !== null) && (!this.isUserAnonymousLoggedIn)) {
@@ -100,12 +127,14 @@ return username;
 
   async loginWithEmail(email: string, password: string) {
     try {
-      const user = firebase.auth().signInWithEmailAndPassword(email, password).then( ()=> {
-        this.user = user;
+      this.afAuth.auth.signInWithEmailAndPassword(email, password).then((user)=>{
+        this.user = this.afAuth.authState;
       });
+      alert("Success!");
     }
     catch (error) {
-      console.log(error);
+
+      alert(error);
       throw error;
     }
   }
@@ -123,7 +152,8 @@ return username;
   }
 
   signOut(): void {
-    firebase.auth().signOut();
+    // firebase.auth().signOut();
+    this.afAuth.auth.signOut();
     this.router.navigate(['/'])
   }
 }

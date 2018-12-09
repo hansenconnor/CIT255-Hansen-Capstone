@@ -21,6 +21,26 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 firebase.initializeApp(environment.firebase);
+firebase.auth().onAuthStateChanged(function(user) {
+  alert(user);
+  if (user) {
+    alert(user.uid);
+    this.isLoggedIn = true;
+     // User is signed in.
+     this.displayName = user.displayName;
+     this.email = user.email;
+     this.emailVerified = user.emailVerified;
+     this.photoURL = user.photoURL;
+     this.isAnonymous = user.isAnonymous;
+     this.uid = user.uid;
+     this.providerData = user.providerData;
+     // ...
+   } else {
+     // User is signed out.
+     // ...
+     // this.user = false;
+   }
+});
 @NgModule({
   declarations: [
     AppComponent,

@@ -49,21 +49,21 @@
             <a *ngIf="!authService.currentUser" href="/register">Sign up</a>
           </div>
           <div class="navbar-item" *ngIf="authService.currentUser">
-            <a [routerLink]="['/', authService.currentUsername]">Profile</a>
+            <a [routerLink]="['/', authService.currentUser]">Profile</a>
           </div>
           <div class="navbar-item">
             <a *ngIf="!authService.currentUser" href="/login">Log in</a>
             <a rel="nofollow" *ngIf="authService.currentUser" (click)="logout()">Logout</a>
-  <!-- <div *ngIf="authService.currentUser">
+  <div>
   	<h5 class="text-primary">User Information</h5>
   	<h4>
-  		<strong>UID:</strong> {{ authService.currentUserId }}
+  		<strong>UID:</strong> {{ authService.uid }}
   	</h4>
   	<h4>
-  		<strong>Email:</strong> {{ authService.currentUserName }}
+  		<!-- <strong>Email:</strong> {{ authService.currentUsername }} -->
   	</h4>
   	<button class="button" (click)="logout()">Logout</button>
-  </div> -->
+  </div>
 
           </div>
         </div>
