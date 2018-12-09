@@ -130,7 +130,7 @@ export class AuthService {
       // this.user = user;
     }
     catch (error) {
-      alert(error);
+      // alert(error);
       throw error;
     }
   }
@@ -140,11 +140,11 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(email, password).then((user)=>{
         this.user = this.afAuth.authState;
       });
-      alert("Success!");
+      // alert("Success!");
     }
     catch (error) {
 
-      alert(error);
+      // alert(error);
       throw error;
     }
   }

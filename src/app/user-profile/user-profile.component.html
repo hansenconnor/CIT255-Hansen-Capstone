@@ -26,13 +26,13 @@
     <div class="columns">
       <div class="column is-one-third">
         <div class="box">
-          <figure>
-            <img src="" alt="">
+          <figure class="image is-300x300">
+            <img src={{profileImageUrl}} alt="">
           </figure>
         </div>
       </div>
-      <div class="column">
-        posts here
+      <div class="column" *ngIf="user">
+        <a href="{{user?.displayName}}/upload" class="button is-primary is-outlined">Click here to submit your first post!</a>
       </div>
     </div>
   </div>

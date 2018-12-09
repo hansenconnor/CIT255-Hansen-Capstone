@@ -1,0 +1,60 @@
+<section class="section" >
+  <div class="container">
+    <div class="columns">
+      <div class="column is-6 is-offset-3">
+        <h1 class="title is-5 has-text-white has-text-primary is-uppercase">
+          Upload
+        </h1>
+        <h2 class="subtitle is-6">
+          What are you working on?
+        </h2>
+
+        <!-- BEGIN Form -->
+        <form action="">
+          <div class="field">
+            <div class="file has-name is-primary">
+          <label class="file-label">
+            <input class="file-input" type="file" name="resume" (change)="upload($event)" accept=".png,.jpg">
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                Choose a file…
+              </span>
+            </span>
+            <span class="file-name">
+              Screen Shot 2017-07-29 at 15.54.25.png
+            </span>
+            <progress max="100" [value]="(uploadProgress | async)"></progress>
+            <div class="result" *ngIf="uploadURL | async; let uploadSrc">
+              <a [href]="uploadSrc">You just uploaded this file!</a>
+            </div>
+          </label>
+        </div>
+          </div>
+          <div class="field">
+            <label for="title">Title</label>
+            <div class="control">
+              <input class="input" type="text" id="title" name="title" placeholder="Title" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="tags">Tags</label>
+            <div class="control">
+              <input class="input" type="text" id="tags" name="tags" placeholder="Tags" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="tags">Description</label>
+            <div class="control">
+              <textarea class="textarea" name="description" id="description" id="" cols="30" rows="5" placeholder="Description"></textarea>
+            </div>
+          </div>
+        </form>
+        <!-- END Form -->
+
+      </div>
+    </div>
+  </div>
+</section>

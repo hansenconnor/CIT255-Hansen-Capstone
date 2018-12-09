@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     this.user = firebase.auth().currentUser;
     firebase.auth().onAuthStateChanged((user) =>{
       this.myUser = user;
-      alert(this.myUser.displayName);
+      // alert(this.myUser.displayName);
       authService.currentUsername.then((response)=>{
         console.log("response:" + response);
         this.username = response;

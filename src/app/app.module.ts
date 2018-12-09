@@ -19,12 +19,13 @@ import { environment } from '../environments/environment';
 import { RegisterComponent } from './register/register.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserUploadComponent } from './user-upload/user-upload.component';
 
 firebase.initializeApp(environment.firebase);
 firebase.auth().onAuthStateChanged(function(user) {
-  alert(user);
+  // alert(user);
   if (user) {
-    alert(user.uid);
+    // alert(user.uid);
     this.isLoggedIn = true;
      // User is signed in.
      this.displayName = user.displayName;
@@ -49,6 +50,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     UserLoginComponent,
     RegisterComponent,
     UserProfileComponent,
+    UserUploadComponent,
   ],
   imports: [
     AngularFireDatabaseModule,
