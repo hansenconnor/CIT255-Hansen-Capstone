@@ -23,14 +23,14 @@ export class UserUploadComponent implements OnInit {
   error: { title: string, tags: string, description: string } = {title: '', tags: '', description: ''};
   storage : any;
   theTask;
-  db;
   uploadProgress: {percentage: number} = {percentage: 0};
+  downloadURL;
   // progress: {percentage: number} = {percentage: 0}
 
   constructor(private afd: AngularFireDatabase, fbApp: FirebaseApp) {
     this.storage = fbApp.storage();
     this.ref = fbApp.database().ref();
-    this.db = fbApp.database();
+    // const db = fbApp.database();
   }
 
   ngOnInit() {}
@@ -38,29 +38,29 @@ export class UserUploadComponent implements OnInit {
   async upload(event) {
     var file = event.target.files[0];
     this.file = file;
-    var storageRef = firebase.storage().ref();
-    var displayName = firebase.auth().currentUser.displayName;
-    this.theTask = storageRef.child('/uploads/' + displayName + '/' + this.file.name).put(this.file);
-    this.theTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {
-        const snap = snapshot as firebase.storage.UploadTaskSnapshot;
-        // this.uploadProgress = snap.bytesTransferred;
-        console.log(Math.round((snap.bytesTransferred / snap.totalBytes) * 100));
-        // this.uploadProgress = snapshot.pipe(map(s => (s.bytesTransferred / s.totalBytes) * 100));
-        // progress.uploadProgress = 2;
-        this.uploadProgress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
-      },
-      (error) => {
-        // fail
-        console.log(error)
-      },
-      () => {
-        // success
-        // fileUpload.url = uploadTask.snapshot.downloadURL
-        // fileUpload.name = fileUpload.file.name
-        // this.saveFileData(fileUpload)
-      }
-    );
+    // var storageRef = firebase.storage().ref();
+    // var displayName = firebase.auth().currentUser.displayName;
+    // this.theTask = storageRef.child('/uploads/' + displayName + '/' + this.file.name).put(this.file);
+    // this.theTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    //   (snapshot) => {
+    //     const snap = snapshot as firebase.storage.UploadTaskSnapshot;
+    //     // this.uploadProgress = snap.bytesTransferred;
+    //     console.log(Math.round((snap.bytesTransferred / snap.totalBytes) * 100));
+    //     // this.uploadProgress = snapshot.pipe(map(s => (s.bytesTransferred / s.totalBytes) * 100));
+    //     // progress.uploadProgress = 2;
+    //     this.uploadProgress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
+    //   },
+    //   (error) => {
+    //     // fail
+    //     console.log(error)
+    //   },
+    //   () => {
+    //     // success
+    //     // fileUpload.url = uploadTask.snapshot.downloadURL
+    //     // fileUpload.name = fileUpload.file.name
+    //     // this.saveFileData(fileUpload)
+    //   }
+    // );
     // var storageRef = firebase.storage().ref();
     // var displayName = firebase.auth().currentUser.displayName;
     // var uploadTask = storageRef.child('/uploads/' + displayName + '/' + file.name).put(file);
@@ -94,18 +94,22 @@ export class UserUploadComponent implements OnInit {
 
   onSubmitPost(): void {
     this.clearErrorMessage();
+    if (this.file == null) {
+      console.log("Please select a file for upload.");
+      return
+    }
     if (this.validateForm(this.title, this.tags, this.description)) {
       var storageRef = firebase.storage().ref();
       var displayName = firebase.auth().currentUser.displayName;
-      this.theTask = storageRef.child('/uploads/' + displayName + '/' + this.file.name).put(this.file);
-      this.theTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      var uploadTask = storageRef.child('/uploads/' + displayName + '/' + this.file.name).put(this.file)
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
         (snapshot) => {
           const snap = snapshot as firebase.storage.UploadTaskSnapshot;
           // this.uploadProgress = snap.bytesTransferred;
           console.log(Math.round((snap.bytesTransferred / snap.totalBytes) * 100));
           // this.uploadProgress = snapshot.pipe(map(s => (s.bytesTransferred / s.totalBytes) * 100));
-          // this.uploadProgress = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-          // progress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
+          // progress.uploadProgress = 2;
+          this.uploadProgress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
         },
         (error) => {
           // fail
@@ -113,11 +117,20 @@ export class UserUploadComponent implements OnInit {
         },
         () => {
           // success
-          // fileUpload.url = uploadTask.snapshot.downloadURL
+          console.log("File uploaded successfuly.");
           // fileUpload.name = fileUpload.file.name
           // this.saveFileData(fileUpload)
         }
       );
+      uploadTask.then((snapshot)=>{
+        snapshot.ref.getDownloadURL().then((downloadURL) =>{
+          this.downloadURL = downloadURL;
+          this.addPostToDatabase(downloadURL);
+          console.log(downloadURL)
+        });
+      });
+       // items.push(yourobject).then((item) => { console.log(item.key); });
+
       // const uploadTask: any = storageRef.child('/uploads/' + displayName + '/' + this.file.name).put(this.file);
       // uploadTask.on('state_changed', (snapshot) => {
       //
@@ -134,6 +147,24 @@ export class UserUploadComponent implements OnInit {
       console.log(this.tags)
       console.log(this.description)
     }
+  }
+
+  addPostToDatabase(postImageUrl){
+    const db = firebase.firestore();
+    // Disable deprecated features
+    db.settings({
+      timestampsInSnapshots: true
+    });
+    db.collection("users").doc(firebase.auth().currentUser.displayName).collection('posts').add({
+      title: this.title,
+      tags: this.tags,
+      description: this.description,
+      imageUrl: postImageUrl
+    }).then(function(docRef){
+      console.log(docRef.id);
+    }).catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
   }
 
   // private saveFileData(fileUpload: FileUpload) {
