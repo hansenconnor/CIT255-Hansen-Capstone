@@ -3,6 +3,8 @@ import { AuthService } from '../core/auth.service';
 import * as firebase from 'firebase';
 import { Router  , ActivatedRoute } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,13 +18,32 @@ export class UserProfileComponent implements OnInit {
   task: any;
   ref: import("/Users/Connor/documents/projects/plvstikAngular/plvstik-app/node_modules/@angular/fire/storage/ref").AngularFireStorageReference;
   uploadProgress: any;
-  constructor(authService: AuthService, private route: ActivatedRoute, private afStorage: AngularFireStorage) {
+  shots: Observable<any>;
+  userID: string;
+  constructor(af: AngularFirestore, authService: AuthService, private route: ActivatedRoute, private afStorage: AngularFireStorage) {
     this.user = firebase.auth().currentUser;
+    this.userID = firebase.auth().currentUser.uid;
     console.log("user:" + this.user);
-    console.log("imageurl: " + firebase.auth().currentUser.photoURL);
-    if (firebase.auth().currentUser.photoURL == null) {
+    // console.log("imageurl: " + firebase.auth().currentUser.photoURL);
+    if (firebase.auth().currentUser.photoURL === null) {
         this.profileImageUrl = "../assets/upload-profile-placeholder@2x.png"
     }
+
+    // this.shots
+    this.shots = af.collection('shots').valueChanges()
+    // af.collection('shots').valueChanges().forEach((shot)=>{
+    //   if (shot['user'] == firebase.auth().currentUser.uid) {
+    //       console.log("user has shot");
+    //       console.log(shot['user'])
+    //   }
+    //   console.log(shot['user'])
+    // });
+    // shots.subscribe((shot)=>{
+    //   console.log(shot);
+    //   if (shot.user == ) {
+    //
+    //   }
+    // })
   }
 
   upload(event) {

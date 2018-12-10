@@ -12,7 +12,7 @@
         <div class="column is-half">
           <div class="buttons is-centered">
   <a class="button" href="/login">Login</a>
-  <a class="button" href="/register">Get Started</a>
+  <a class="button is-primary is-outlined" href="/register">Get Started</a>
   <!-- <span class="button">No</span> -->
 </div>
         </div>
@@ -24,14 +24,14 @@
 
 <div class="section">
   <div class="container">
-    <div class="columns">
+    <div class="columns is-multiline">
       <div class="column is-one-quarter-desktop is-half-tablet" *ngFor="let shot of shots | async">
         <div class="plvstik-shot">
           <div class="plvstik-image" [ngStyle]="{ 'background-image': 'url(' + shot.image_url + ')'}">
           </div>
           <ul class="actions">
             <li>{{shot.title}}</li>
-            <li>View</li>
+            <!-- <li>View</li> -->
             <!-- <li>Favorite</li> -->
           </ul>
         </div>

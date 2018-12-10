@@ -25,12 +25,14 @@ export class UserUploadComponent implements OnInit {
   theTask;
   uploadProgress: {percentage: number} = {percentage: 0};
   downloadURL;
+  shots: Observable<any>;
   // progress: {percentage: number} = {percentage: 0}
 
   constructor(private afd: AngularFireDatabase, fbApp: FirebaseApp) {
     this.storage = fbApp.storage();
     this.ref = fbApp.database().ref();
     // const db = fbApp.database();
+
   }
 
   ngOnInit() {}

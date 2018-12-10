@@ -1,0 +1,12 @@
+.plvstik-shot {
+  // height: 337.5px;
+  height: auto;
+  padding: 13px;
+  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+  & .plvstik-image {
+    height: 272.5px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}

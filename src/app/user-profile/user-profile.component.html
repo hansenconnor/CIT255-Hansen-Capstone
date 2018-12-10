@@ -1,7 +1,7 @@
 <div class="wrap has-background-white-ter">
 
 
-<section class="section is-small">
+<!-- <section class="section is-small">
   <div class="container">
       <div class="box">
         <div class="columns is-centered">
@@ -19,20 +19,38 @@
         </div>
       </div>
     </div>
-</section>
+</section> -->
 
-<section>
+<section class="section">
   <div class="container">
     <div class="columns">
-      <div class="column is-one-third">
+      <!-- <div class="column is-one-third">
         <div class="box">
           <figure class="image is-300x300">
             <img src={{profileImageUrl}} alt="">
           </figure>
         </div>
-      </div>
-      <div class="column" *ngIf="user">
-        <a href="{{user?.displayName}}/upload" class="button is-primary is-outlined">Click here to submit your first post!</a>
+      </div> -->
+      <div class="column is-two-thirds is-offset-2" *ngIf="user">
+        <div class="box"><a href="{{user?.displayName}}/upload" class="button is-primary is-outlined is-fullwidth">Create a new post</a></div>
+        <div class="columns">
+          <ng-container *ngFor="let shot of shots | async">
+            <div *ngIf="shot.user == userID" class="column is-half">
+                <div class="box">
+                  <div class="plvstik-shot">
+                    <div class="plvstik-image" [ngStyle]="{ 'background-image': 'url(' + shot.image_url + ')'}">
+                    </div>
+                    <ul class="actions">
+                      <li>{{shot.title}}</li>
+                      <!-- <li>View</li> -->
+                      <!-- <li>Favorite</li> -->
+                    </ul>
+                </div>
+                </div>
+            </div>
+          </ng-container>
+          </div>
+
       </div>
     </div>
   </div>
