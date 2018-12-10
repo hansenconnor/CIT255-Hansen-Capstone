@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
 
   user;
   userID;
-  public username: Observable<any>;
+  public username: string;
   public chad: string;
   // myUser: Observable<firebase.User>;
   public myUser;
@@ -25,10 +25,11 @@ export class HeaderComponent implements OnInit {
     firebase.auth().onAuthStateChanged((user) =>{
       this.myUser = user;
       // alert(this.myUser.displayName);
-      authService.currentUsername.then((response)=>{
-        console.log("response:" + response);
-        this.username = response;
-      });
+      this.username = authService.currentUsername;
+      // authService.currentUsername.((response)=>{
+      //   console.log("response:" + response);
+      //
+      // });
       console.log("username: " + authService.currentUsername);
     });
 

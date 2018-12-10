@@ -155,11 +155,16 @@ export class UserUploadComponent implements OnInit {
     db.settings({
       timestampsInSnapshots: true
     });
-    db.collection("users").doc(firebase.auth().currentUser.displayName).collection('posts').add({
+
+
+
+    db.collection("shots").add({
       title: this.title,
       tags: this.tags,
       description: this.description,
-      imageUrl: postImageUrl
+      image_url: postImageUrl,
+      user: firebase.auth().currentUser.uid,
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(docRef){
       console.log(docRef.id);
     }).catch(function(error) {

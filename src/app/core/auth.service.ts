@@ -5,6 +5,8 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 // import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +24,7 @@ export class AuthService {
   providerData;
   myUser: Observable<firebase.User>;
 
-  constructor(private router: Router, private afAuth: AngularFireAuth) {
+  constructor(private router: Router, private afAuth: AngularFireAuth, private af: AngularFirestore) {
     afAuth.authState.subscribe(user => console.log(user));
     this.myUser = afAuth.authState;
     this.db = firebase.firestore();
@@ -62,6 +64,15 @@ export class AuthService {
     return this.afAuth.auth.currentUser;
   }
 
+  getUsers(){
+    return this.af.collection('users');
+    // return this.db.collection('users');
+  }
+
+  getAllUserPosts(users) {
+    return this.af.collection
+  }
+
 
   userStatus() {
       return this.afAuth.authState;
@@ -81,23 +92,24 @@ export class AuthService {
   }
 
   get currentUsername() {
-    var currentUser = this.afAuth.auth.currentUser;
-    var currUserId = currentUser.uid;
-    var docRef = this.db.collection("users").doc(currUserId);
-    var username = docRef.get().then(function(doc){
-      if (doc.exists) {
-        // this.username = doc.username;
-        console.log("Document data:", doc.data());
-        var doc = doc.data();
-        console.log(doc['username']);
-        return doc['username'];
-      } else {
-          console.log("No such document!");
-          return '/';
-          // doc.data() will be undefined in this case
-      }
-    });
-    return username;
+    return this.afAuth.auth.currentUser.displayName;
+    // var currentUser = this.afAuth.auth.currentUser;
+    // var currUserId = currentUser.uid;
+    // var docRef = this.db.collection("users").doc(currUserId);
+    // var username = docRef.get().then(function(doc){
+    //   if (doc.exists) {
+    //     // this.username = doc.username;
+    //     console.log("Document data:", doc.data());
+    //     var doc = doc.data();
+    //     console.log(doc['username']);
+    //     return doc['username'];
+    //   } else {
+    //       console.log("No such document!");
+    //       return '/';
+    //       // doc.data() will be undefined in this case
+    //   }
+    // });
+    // return username;
   }
 
   // currentUser() {

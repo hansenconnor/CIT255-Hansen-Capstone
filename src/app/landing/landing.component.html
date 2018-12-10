@@ -11,9 +11,9 @@
       <div class="columns is-centered">
         <div class="column is-half">
           <div class="buttons is-centered">
-  <span class="button">Yes</span>
-  <span class="button">Maybe</span>
-  <span class="button">No</span>
+  <a class="button" href="/login">Login</a>
+  <a class="button" href="/register">Get Started</a>
+  <!-- <span class="button">No</span> -->
 </div>
         </div>
       </div>
@@ -30,10 +30,9 @@
           <div class="plvstik-image" [ngStyle]="{ 'background-image': 'url(' + shot.image_url + ')'}">
           </div>
           <ul class="actions">
-            <li>Like</li>
-            <li>Comment</li>
+            <li>{{shot.title}}</li>
             <li>View</li>
-            <li>Favorite</li>
+            <!-- <li>Favorite</li> -->
           </ul>
         </div>
       </div>
