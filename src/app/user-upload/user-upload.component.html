@@ -8,9 +8,14 @@
         <h2 class="subtitle is-6">
           What are you working on?
         </h2>
-
+<!-- <progress max="100" [value]="(uploadProgress | async)"></progress> -->
+<div class="progress-bar progress-bar-info progress-bar-striped"
+		role="progressbar" attr.aria-valuenow="{{uploadProgress.percentage}}"
+		aria-valuemin="0" aria-valuemax="100"
+		[ngStyle]="{width:uploadProgress.percentage+'%'}">
+		{{uploadProgress.percentage}}%</div>
         <!-- BEGIN Form -->
-        <form action="">
+        <form (ngSubmit)="onSubmitPost()">
           <div class="field">
             <div class="file has-name is-primary">
           <label class="file-label">
@@ -24,31 +29,36 @@
               </span>
             </span>
             <span class="file-name">
-              Screen Shot 2017-07-29 at 15.54.25.png
+              {{file.name}}
             </span>
-            <progress max="100" [value]="(uploadProgress | async)"></progress>
-            <div class="result" *ngIf="uploadURL | async; let uploadSrc">
+            <!-- <progress max="100" [value]="(uploadProgress | async)"></progress> -->
+            <!-- <div class="result" *ngIf="uploadURL | async; let uploadSrc">
               <a [href]="uploadSrc">You just uploaded this file!</a>
-            </div>
+            </div> -->
           </label>
         </div>
           </div>
           <div class="field">
             <label for="title">Title</label>
             <div class="control">
-              <input class="input" type="text" id="title" name="title" placeholder="Title" />
+              <input class="input" type="text" id="title" name="title" placeholder="Title" [(ngModel)]="title" required/>
             </div>
           </div>
           <div class="field">
             <label for="tags">Tags</label>
             <div class="control">
-              <input class="input" type="text" id="tags" name="tags" placeholder="Tags" />
+              <input class="input" type="text" id="tags" name="tags" placeholder="Tags" [(ngModel)]="tags" required/>
             </div>
           </div>
           <div class="field">
             <label for="tags">Description</label>
             <div class="control">
-              <textarea class="textarea" name="description" id="description" id="" cols="30" rows="5" placeholder="Description"></textarea>
+              <textarea class="textarea" name="description" id="description" id="" cols="30" rows="5" placeholder="Description" [(ngModel)]="description" required></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-outlined is-primary is-fullwidth is-medium">Submit</button>
             </div>
           </div>
         </form>
